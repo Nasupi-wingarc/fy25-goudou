@@ -40,7 +40,7 @@ interface TimetableGridProps {
 
 const TimetableGrid: React.FC<TimetableGridProps> = ({ currentWeek, onSubjectClick }) => {
   const timeSlots = ['1限', '2限', '3限', '4限', '5限', '6限'];
-  
+
   const weekDates = getWeekDates(currentWeek);
   const today = new Date();
   const todayString = `${today.getMonth() + 1}/${today.getDate()}`;
@@ -53,6 +53,7 @@ const TimetableGrid: React.FC<TimetableGridProps> = ({ currentWeek, onSubjectCli
     [null, { name: '日本史', isOnline: true }, null, null, null, { name: '英語' }, null],
     [null, null, { name: '現代文' }, { name: '体育' }, { name: '科学' }, null, null]
   ];
+
 
   const handleSubjectClick = (subject: Subject) => {
     if (subject.isOnline) {
@@ -67,11 +68,11 @@ const TimetableGrid: React.FC<TimetableGridProps> = ({ currentWeek, onSubjectCli
           <TableRow>
             <TableCell sx={{ width: 100, backgroundColor: '#f5f5f5' }}></TableCell>
             {weekDates.map((dayInfo) => (
-              <TableCell 
-                key={dayInfo.fullDateString} 
-                align="center" 
-                sx={{ 
-                  backgroundColor: dayInfo.dateString === todayString ? '#fff3cd' : '#f5f5f5',
+              <TableCell
+                key={dayInfo.fullDateString}
+                align="center"
+                sx={{
+                  backgroundColor: dayInfo.dateString === todayString ? '' : 'white',
                   fontWeight: 'bold'
                 }}
               >
@@ -87,29 +88,44 @@ const TimetableGrid: React.FC<TimetableGridProps> = ({ currentWeek, onSubjectCli
                 {time}
               </TableCell>
               {weekDates.map((dayInfo, dayIndex) => (
-                <TableCell 
-                  key={`${time}-${dayInfo.dateString}`} 
+                <TableCell
+                  key={`${time}-${dayInfo.dateString}`}
                   align="center"
-                  sx={{ 
-                    backgroundColor: dayInfo.dateString === todayString ? '#fff3cd' : 'white',
+                  sx={{
+                    backgroundColor: dayInfo.dateString === todayString ? '#ffffbc' : 'white',
                     height: 60
                   }}
                 >
-                  {scheduleData[timeIndex] && scheduleData[timeIndex][dayIndex] && (
-                    <Chip
-                      icon={scheduleData[timeIndex][dayIndex]!.isOnline ? <Language /> : undefined}
-                      label={scheduleData[timeIndex][dayIndex]!.name}
-                      size="small"
-                      onClick={() => handleSubjectClick(scheduleData[timeIndex][dayIndex]!)}
-                      sx={{ 
-                        backgroundColor: scheduleData[timeIndex][dayIndex]!.isOnline ? '#e8f5e8' : 'white',
-                        border: scheduleData[timeIndex][dayIndex]!.isOnline ? 'none' : '1px solid #ccc',
-                        cursor: scheduleData[timeIndex][dayIndex]!.isOnline ? 'pointer' : 'default',
-                        '&:hover': scheduleData[timeIndex][dayIndex]!.isOnline ? {
-                          backgroundColor: '#d4edda'
-                        } : {}
-                      }}
-                    />
+                  {scheduleData[timeIndex]?.[dayIndex] && (
+                    scheduleData[timeIndex][dayIndex]!.isOnline ? (
+                      // オンラインの場合：ボタン（Chip）を表示
+                      <Chip
+                        icon={<Language />}
+                        label={scheduleData[timeIndex][dayIndex]!.name}
+                        size="small"
+                        onClick={() => handleSubjectClick(scheduleData[timeIndex][dayIndex]!)}
+                        sx={{
+                          backgroundColor: '#e8f5e8',
+                          borderRadius: 0,
+                          cursor: 'pointer',
+                          '&:hover': {
+                            backgroundColor: '#d4edda'
+                          }
+                        }}
+                      />
+                    ) : (
+                      // オフラインの場合：テキストのみ表示（ボタンなし）
+                      <span
+                        onClick={() => handleSubjectClick(scheduleData[timeIndex][dayIndex]!)}
+                        style={{
+                          cursor: 'pointer',
+                          color: '#666',
+                          fontSize: '0.875rem'
+                        }}
+                      >
+                        {scheduleData[timeIndex][dayIndex]!.name}
+                      </span>
+                    )
                   )}
                 </TableCell>
               ))}
