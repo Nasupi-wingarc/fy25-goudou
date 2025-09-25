@@ -2,26 +2,63 @@ import React from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Chip } from '@mui/material';
 import { Language } from '@mui/icons-material';
 
-const TimetableGrid: React.FC = () => {
-  const timeSlots = ['6時間', '7時間', '8時間', '9時間', '10時間', '11時間', '12時間', '13時間', '14時間', '15時間', '16時間', '17時間', '18時間', '19時間', '20時間'];
+interface Subject {
+  name: string;
+  isOnline?: boolean;
+}
+
+interface DateInfo {
+  date: Date;
+  dayName: string;
+  dateString: string;
+  fullDateString: string;
+}
+
+const getWeekDates = (baseDate: Date = new Date()): DateInfo[] => {
+  const dates: DateInfo[] = [];
+  const startOfWeek = new Date(baseDate);
+  const dayOfWeek = startOfWeek.getDay();
+  startOfWeek.setDate(startOfWeek.getDate() - dayOfWeek);
+
+  for (let i = 0; i < 7; i++) {
+    const date = new Date(startOfWeek);
+    date.setDate(startOfWeek.getDate() + i);
+    dates.push({
+      date: date,
+      dayName: ['日', '月', '火', '水', '木', '金', '土'][i],
+      dateString: `${date.getMonth() + 1}/${date.getDate()}`,
+      fullDateString: `${date.getMonth() + 1}/${date.getDate()}(${['日', '月', '火', '水', '木', '金', '土'][i]})`
+    });
+  }
+  return dates;
+};
+
+interface TimetableGridProps {
+  currentWeek: Date;
+  onSubjectClick: (subject: Subject) => void;
+}
+
+const TimetableGrid: React.FC<TimetableGridProps> = ({ currentWeek, onSubjectClick }) => {
+  const timeSlots = ['1限', '2限', '3限', '4限', '5限', '6限'];
   
-  const days = [
-    '12/12(日)',
-    '12/13(月)',
-    '12/14(火)',
-    '12/15(水)',
-    '12/16(木)',
-    '12/17(金)',
-    '12/18(土)'
+  const weekDates = getWeekDates(currentWeek);
+  const today = new Date();
+  const todayString = `${today.getMonth() + 1}/${today.getDate()}`;
+
+  const scheduleData: (Subject | null)[][] = [
+    [null, { name: '現代文' }, { name: '科学' }, { name: '科学' }, { name: '英語' }, { name: '数学' }, null],
+    [null, { name: '古文' }, { name: '数学' }, { name: '英語' }, { name: '科学' }, { name: '化学' }, null],
+    [null, { name: '科学' }, { name: '日本史', isOnline: true }, { name: '科学' }, { name: '現代文' }, { name: '古文' }, null],
+    [null, { name: '化学' }, { name: '現代文' }, { name: '体育' }, { name: '科学' }, { name: '科学' }, null],
+    [null, { name: '日本史', isOnline: true }, null, null, null, { name: '英語' }, null],
+    [null, null, { name: '現代文' }, { name: '体育' }, { name: '科学' }, null, null]
   ];
 
-  const scheduleData = [
-    ['', '現代文', '科学', '科学', '英語', '数学', ''],
-    ['', '古文', '数学', '英語', '科学', '化学', ''],
-    ['', '科学', '日本史', '科学', '現代文', '古文', ''],
-    ['', '化学', '現代文', '体育', '科学', '科学', ''],
-    ['', '日本史', '', '', '', '英語', '']
-  ];
+  const handleSubjectClick = (subject: Subject) => {
+    if (subject.isOnline) {
+      onSubjectClick(subject);
+    }
+  };
 
   return (
     <TableContainer component={Paper} sx={{ mx: 2 }}>
@@ -29,72 +66,50 @@ const TimetableGrid: React.FC = () => {
         <TableHead>
           <TableRow>
             <TableCell sx={{ width: 100, backgroundColor: '#f5f5f5' }}></TableCell>
-            {days.map((day) => (
+            {weekDates.map((dayInfo) => (
               <TableCell 
-                key={day} 
+                key={dayInfo.fullDateString} 
                 align="center" 
                 sx={{ 
-                  backgroundColor: day === '12/14(火)' ? '#fff3cd' : '#f5f5f5',
+                  backgroundColor: dayInfo.dateString === todayString ? '#fff3cd' : '#f5f5f5',
                   fontWeight: 'bold'
                 }}
               >
-                {day}
+                {dayInfo.fullDateString}
               </TableCell>
             ))}
           </TableRow>
         </TableHead>
         <TableBody>
-          {timeSlots.map((time, index) => (
+          {timeSlots.map((time, timeIndex) => (
             <TableRow key={time}>
               <TableCell sx={{ backgroundColor: '#f5f5f5', fontWeight: 'bold' }}>
                 {time}
               </TableCell>
-              {days.map((day, dayIndex) => (
+              {weekDates.map((dayInfo, dayIndex) => (
                 <TableCell 
-                  key={`${time}-${day}`} 
+                  key={`${time}-${dayInfo.dateString}`} 
                   align="center"
                   sx={{ 
-                    backgroundColor: day === '12/14(火)' ? '#fff3cd' : 'white',
+                    backgroundColor: dayInfo.dateString === todayString ? '#fff3cd' : 'white',
                     height: 60
                   }}
                 >
-                  {index < scheduleData.length && scheduleData[index][dayIndex] && (
-                    <>
-                      {scheduleData[index][dayIndex] === '日本史' ? (
-                        <Chip
-                          icon={<Language />}
-                          label="日本史"
-                          size="small"
-                          sx={{ backgroundColor: '#e8f5e8' }}
-                        />
-                      ) : scheduleData[index][dayIndex] === '数学' && dayIndex === 1 ? (
-                        <Chip
-                          label="数学"
-                          size="small"
-                          sx={{ 
-                            backgroundColor: 'white', 
-                            border: '2px solid #ccc',
-                            boxShadow: 2
-                          }}
-                        />
-                      ) : scheduleData[index][dayIndex] === '化学' && dayIndex === 0 ? (
-                        <Chip
-                          label="化学"
-                          size="small"
-                          sx={{ 
-                            backgroundColor: 'white', 
-                            border: '2px solid #ccc',
-                            boxShadow: 2
-                          }}
-                        />
-                      ) : (
-                        <Chip
-                          label={scheduleData[index][dayIndex]}
-                          size="small"
-                          variant="outlined"
-                        />
-                      )}
-                    </>
+                  {scheduleData[timeIndex] && scheduleData[timeIndex][dayIndex] && (
+                    <Chip
+                      icon={scheduleData[timeIndex][dayIndex]!.isOnline ? <Language /> : undefined}
+                      label={scheduleData[timeIndex][dayIndex]!.name}
+                      size="small"
+                      onClick={() => handleSubjectClick(scheduleData[timeIndex][dayIndex]!)}
+                      sx={{ 
+                        backgroundColor: scheduleData[timeIndex][dayIndex]!.isOnline ? '#e8f5e8' : 'white',
+                        border: scheduleData[timeIndex][dayIndex]!.isOnline ? 'none' : '1px solid #ccc',
+                        cursor: scheduleData[timeIndex][dayIndex]!.isOnline ? 'pointer' : 'default',
+                        '&:hover': scheduleData[timeIndex][dayIndex]!.isOnline ? {
+                          backgroundColor: '#d4edda'
+                        } : {}
+                      }}
+                    />
                   )}
                 </TableCell>
               ))}

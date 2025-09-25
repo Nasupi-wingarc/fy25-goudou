@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography} from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { Language } from '@mui/icons-material';
 
 const UserInfo: React.FC = () => {
