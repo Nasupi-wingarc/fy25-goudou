@@ -3,7 +3,7 @@ import { Box } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Header from './components/Header';
-import UserInfo from './components/UserInfo';
+// import UserInfo from './components/UserInfo';
 import TimetablePage from './pages/TimetablePage';
 import VideoPlayerPage from './pages/VideoPlayerPage';
 import FlightStatusPage from './pages/FlightStatusPage';
