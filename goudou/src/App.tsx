@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Header from './components/Header';
-import UserInfo from './components/UserInfo';
 import TimetablePage from './pages/TimetablePage';
 import VideoPlayerPage from './pages/VideoPlayerPage';
 import TestPage from './pages/TestPage';
@@ -45,7 +44,7 @@ const App: React.FC = () => {
       {pageMode !== 'test' && (
         <>
           <Header currentPage={currentPage} setCurrentPage={setCurrentPage} />
-          <UserInfo />
+
         </>
       )}
       

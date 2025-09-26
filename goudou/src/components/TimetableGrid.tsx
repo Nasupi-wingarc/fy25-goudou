@@ -116,52 +116,57 @@ const TimetableGrid: React.FC<TimetableGridProps> = ({ currentWeek, onSubjectCli
               <TableCell sx={{ backgroundColor: '#f5f5f5', fontWeight: 'bold', textAlign: 'center' }}>
                 {time}
               </TableCell>
-              {weekDates.map((dayInfo, dayIndex) => (
-                <TableCell
-                  key={`${time}-${dayInfo.dateString}`}
-                  align="center"
-                  sx={{
-                    backgroundColor: 'white',
-                    height: 60
-                  }}
-                >
-                  {scheduleData[timeIndex]?.[dayIndex] && (
-                    scheduleData[timeIndex][dayIndex]!.isOnline ? (
-                      <Chip
-                        icon={<Language />}
-                        label={scheduleData[timeIndex][dayIndex]!.name}
-                        size="small"
-                        onClick={() => handleSubjectClick(scheduleData[timeIndex][dayIndex]!)}
-                        sx={{
-                          backgroundColor: '#e8f5e8',
-                          borderRadius: 0,
-                          cursor: 'pointer',
-                          '&:hover': {
-                            backgroundColor: '#d4edda'
-                          }
-                        }}
-                      />
-                    ) : (
-                      <span
-                        onClick={() => handleSubjectClick(scheduleData[timeIndex][dayIndex]!)}
-                        style={{
-                          cursor: 'pointer',
-                          color: '#666',
-                          fontSize: '0.875rem'
-                        }}
-                      >
-                        {scheduleData[timeIndex][dayIndex]!.name}
-                      </span>
-                    )
-                  )}
-                </TableCell>
-              ))}
+              {weekDates.map((dayInfo, dayIndex) => {
+                // 土曜日（6）と日曜日（0）をチェック
+                const isWeekend = dayInfo.date.getDay() === 0 || dayInfo.date.getDay() === 6;
+                
+                return (
+                  <TableCell
+                    key={`${time}-${dayInfo.dateString}`}
+                    align="center"
+                    sx={{
+                      backgroundColor: isWeekend ? '#949393ff' : 'white',
+                      height: 60
+                    }}
+                  >
+                    {scheduleData[timeIndex]?.[dayIndex] && (
+                      scheduleData[timeIndex][dayIndex]!.isOnline ? (
+                        <Chip
+                          icon={<Language />}
+                          label={scheduleData[timeIndex][dayIndex]!.name}
+                          size="small"
+                          onClick={() => handleSubjectClick(scheduleData[timeIndex][dayIndex]!)}
+                          sx={{
+                            backgroundColor: '#e8f5e8',
+                            borderRadius: 0,
+                            cursor: 'pointer',
+                            '&:hover': {
+                              backgroundColor: '#d4edda'
+                            }
+                          }}
+                        />
+                      ) : (
+                        <span
+                          onClick={() => handleSubjectClick(scheduleData[timeIndex][dayIndex]!)}
+                          style={{
+                            cursor: 'pointer',
+                            color: isWeekend ? 'white' : '#666', // 土日は白文字、平日は元の色
+                            fontSize: '0.875rem'
+                          }}
+                        >
+                          {scheduleData[timeIndex][dayIndex]!.name}
+                        </span>
+                      )
+                    )}
+                  </TableCell>
+                );
+              })}
             </TableRow>
           ))}
         </TableBody>
-      </Table>
-    </TableContainer>
-  );
+    </Table>
+  </TableContainer>
+);
 };
 
 export default TimetableGrid;
