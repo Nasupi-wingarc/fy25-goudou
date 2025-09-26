@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Chip } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Chip, Box } from '@mui/material';
 import { Language } from '@mui/icons-material';
 
 interface Subject {
@@ -90,83 +90,94 @@ const TimetableGrid: React.FC<TimetableGridProps> = ({ currentWeek, onSubjectCli
   };
 
   return (
-  <TableContainer component={Paper} sx={{ mx: 2 }}>
-    <Table>
-      <TableHead>
-        <TableRow>
-          <TableCell sx={{ width: 100, backgroundColor: '#003793', color: 'white' }}></TableCell>
-          {weekDates.map((dayInfo) => (
-            <TableCell
-              key={dayInfo.fullDateString}
-              align="center"
-              sx={{
-                backgroundColor: '#003793',
-                color: 'white',
-                fontWeight: 'bold'
-              }}
-            >
-              {dayInfo.fullDateString}
-            </TableCell>
-          ))}
-        </TableRow>
-      </TableHead>
-        <TableBody>
-          {timeSlots.map((time, timeIndex) => (
-            <TableRow key={time}>
-              <TableCell sx={{ backgroundColor: '#f5f5f5', fontWeight: 'bold', textAlign: 'center' }}>
-                {time}
-              </TableCell>
-              {weekDates.map((dayInfo, dayIndex) => {
-                // 土曜日（6）と日曜日（0）をチェック
-                const isWeekend = dayInfo.date.getDay() === 0 || dayInfo.date.getDay() === 6;
-                
-                return (
-                  <TableCell
-                    key={`${time}-${dayInfo.dateString}`}
-                    align="center"
-                    sx={{
-                      backgroundColor: isWeekend ? '#949393ff' : 'white',
-                      height: 60
-                    }}
-                  >
-                    {scheduleData[timeIndex]?.[dayIndex] && (
-                      scheduleData[timeIndex][dayIndex]!.isOnline ? (
-                        <Chip
-                          icon={<Language />}
-                          label={scheduleData[timeIndex][dayIndex]!.name}
-                          size="small"
-                          onClick={() => handleSubjectClick(scheduleData[timeIndex][dayIndex]!)}
-                          sx={{
-                            backgroundColor: '#e8f5e8',
-                            borderRadius: 0,
-                            cursor: 'pointer',
-                            '&:hover': {
-                              backgroundColor: '#d4edda'
-                            }
-                          }}
-                        />
-                      ) : (
-                        <span
-                          onClick={() => handleSubjectClick(scheduleData[timeIndex][dayIndex]!)}
-                          style={{
-                            cursor: 'pointer',
-                            color: isWeekend ? 'white' : '#666', // 土日は白文字、平日は元の色
-                            fontSize: '0.875rem'
-                          }}
-                        >
-                          {scheduleData[timeIndex][dayIndex]!.name}
-                        </span>
-                      )
-                    )}
-                  </TableCell>
-                );
-              })}
+    <Box sx={{ px: 4 }}>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell sx={{ width: 100, backgroundColor: '#003793', color: 'white' }}></TableCell>
+              {weekDates.map((dayInfo) => (
+                <TableCell
+                  key={dayInfo.fullDateString}
+                  align="center"
+                  sx={{
+                    backgroundColor: '#003793',
+                    color: 'white',
+                    fontWeight: 'bold'
+                  }}
+                >
+                  {dayInfo.fullDateString}
+                </TableCell>
+              ))}
             </TableRow>
-          ))}
-        </TableBody>
-    </Table>
-  </TableContainer>
-);
+          </TableHead>
+          <TableBody>
+            {timeSlots.map((time, timeIndex) => (
+              <TableRow key={time}>
+                <TableCell sx={{ 
+                  backgroundColor: '#f5f5f5', 
+                  fontWeight: 'bold', 
+                  textAlign: 'center',
+                  py: 3,
+                  fontSize: '1rem'
+                }}>
+                  {time}
+                </TableCell>
+                {weekDates.map((dayInfo, dayIndex) => {
+                  // 土曜日（6）と日曜日（0）をチェック
+                  const isWeekend = dayInfo.date.getDay() === 0 || dayInfo.date.getDay() === 6;
+                  
+                  return (
+                    <TableCell
+                      key={`${time}-${dayInfo.dateString}`}
+                      align="center"
+                      sx={{
+                        backgroundColor: isWeekend ? '#949393ff' : 'white',
+                        height: 80,
+                        py: 3
+                      }}
+                    >
+                      {scheduleData[timeIndex]?.[dayIndex] && (
+                        scheduleData[timeIndex][dayIndex]!.isOnline ? (
+                          <Chip
+                            icon={<Language />}
+                            label={scheduleData[timeIndex][dayIndex]!.name}
+                            size="medium"
+                            onClick={() => handleSubjectClick(scheduleData[timeIndex][dayIndex]!)}
+                            sx={{
+                              backgroundColor: '#e8f5e8',
+                              borderRadius: 0,
+                              cursor: 'pointer',
+                              fontSize: '0.9rem',
+                              height: 32,
+                              '&:hover': {
+                                backgroundColor: '#d4edda'
+                              }
+                            }}
+                          />
+                        ) : (
+                          <span
+                            onClick={() => handleSubjectClick(scheduleData[timeIndex][dayIndex]!)}
+                            style={{
+                              cursor: 'pointer',
+                              color: isWeekend ? 'white' : '#666',
+                              fontSize: '1rem'
+                            }}
+                          >
+                            {scheduleData[timeIndex][dayIndex]!.name}
+                          </span>
+                        )
+                      )}
+                    </TableCell>
+                  );
+                })}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Box>
+  );
 };
 
 export default TimetableGrid;
