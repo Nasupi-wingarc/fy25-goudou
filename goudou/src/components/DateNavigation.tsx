@@ -69,6 +69,9 @@ const DateNavigation: React.FC<DateNavigationProps> = ({ currentWeek, onWeekChan
 
   return (
     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 2 }}>
+      <Typography variant="h6">
+        {dateRangeString}
+      </Typography>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
         <Button 
           variant="contained" 
@@ -91,9 +94,6 @@ const DateNavigation: React.FC<DateNavigationProps> = ({ currentWeek, onWeekChan
           <ChevronRight />
         </IconButton>
       </Box>
-      <Typography variant="h6">
-        {dateRangeString}
-      </Typography>
     </Box>
   );
 };
