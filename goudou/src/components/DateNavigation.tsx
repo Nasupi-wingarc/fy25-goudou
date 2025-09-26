@@ -31,7 +31,15 @@ const getWeekDates = (baseDate: Date = new Date()): DateInfo[] => {
 const formatDateRange = (dates: DateInfo[]): string => {
   const start = dates[0].date;
   const end = dates[6].date;
-  return `${start.getFullYear()}年${start.getMonth() + 1}月${start.getDate()}日 - ${end.getDate()}日`;
+  
+  // 開始日と終了日が同じ月の場合
+  if (start.getMonth() === end.getMonth()) {
+    return `${start.getFullYear()}年${start.getMonth() + 1}月${start.getDate()}日 - ${end.getDate()}日`;
+  }
+  // 異なる月の場合
+  else {
+    return `${start.getFullYear()}年${start.getMonth() + 1}月${start.getDate()}日 - ${end.getMonth() + 1}月${end.getDate()}日`;
+  }
 };
 
 interface DateNavigationProps {
@@ -61,9 +69,6 @@ const DateNavigation: React.FC<DateNavigationProps> = ({ currentWeek, onWeekChan
 
   return (
     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 2 }}>
-      <Typography variant="h6">
-        {dateRangeString}
-      </Typography>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
         <Button 
           variant="contained" 
@@ -86,6 +91,9 @@ const DateNavigation: React.FC<DateNavigationProps> = ({ currentWeek, onWeekChan
           <ChevronRight />
         </IconButton>
       </Box>
+      <Typography variant="h6">
+        {dateRangeString}
+      </Typography>
     </Box>
   );
 };
