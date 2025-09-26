@@ -4,7 +4,7 @@ import { Language } from '@mui/icons-material';
 
 const UserInfo: React.FC = () => {
   return (
-    <Box sx={{ p: 2, backgroundColor: '#f5f5f5' }}>
+    <Box sx={{ p: 2, backgroundColor: '#0094ce' }}>
       <Typography variant="h6" sx={{ mb: 1 }}>
         ログイン中：3年1組 山田 太郎
       </Typography>
