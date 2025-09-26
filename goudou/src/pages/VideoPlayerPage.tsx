@@ -5,18 +5,28 @@ import { ArrowBack } from '@mui/icons-material';
 interface VideoPlayerPageProps {
   subject: string;
   onBack: () => void;
+  onGoToTest: () => void;
 }
 
-const VideoPlayerPage: React.FC<VideoPlayerPageProps> = ({ subject, onBack }) => {
+const VideoPlayerPage: React.FC<VideoPlayerPageProps> = ({ subject, onBack, onGoToTest }) => {
   return (
     <Box sx={{ p: 2 }}>
-      <Button
-        startIcon={<ArrowBack />}
-        onClick={onBack}
-        sx={{ mb: 2, color: '#666' }}
-      >
-        戻る
-      </Button>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+        <Button
+          startIcon={<ArrowBack />}
+          onClick={onBack}
+          sx={{ color: '#666' }}
+        >
+          戻る
+        </Button>
+        <Button
+          variant="contained"
+          onClick={onGoToTest}
+          sx={{ backgroundColor: '#1976d2', '&:hover': { backgroundColor: '#115293' } }}
+        >
+          テストへ
+        </Button>
+      </Box>
       
       <Paper
         sx={{
