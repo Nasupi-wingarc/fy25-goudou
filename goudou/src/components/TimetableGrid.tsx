@@ -62,25 +62,26 @@ const TimetableGrid: React.FC<TimetableGridProps> = ({ currentWeek, onSubjectCli
   };
 
   return (
-    <TableContainer component={Paper} sx={{ mx: 2 }}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell sx={{ width: 100, backgroundColor: '#f5f5f5' }}></TableCell>
-            {weekDates.map((dayInfo) => (
-              <TableCell
-                key={dayInfo.fullDateString}
-                align="center"
-                sx={{
-                  backgroundColor: dayInfo.dateString === todayString ? '' : 'white',
-                  fontWeight: 'bold'
-                }}
-              >
-                {dayInfo.fullDateString}
-              </TableCell>
-            ))}
-          </TableRow>
-        </TableHead>
+  <TableContainer component={Paper} sx={{ mx: 2 }}>
+    <Table>
+      <TableHead>
+        <TableRow>
+          <TableCell sx={{ width: 100, backgroundColor: '#003793', color: 'white' }}></TableCell>
+          {weekDates.map((dayInfo) => (
+            <TableCell
+              key={dayInfo.fullDateString}
+              align="center"
+              sx={{
+                backgroundColor: '#003793',
+                color: 'white',
+                fontWeight: 'bold'
+              }}
+            >
+              {dayInfo.fullDateString}
+            </TableCell>
+          ))}
+        </TableRow>
+      </TableHead>
         <TableBody>
           {timeSlots.map((time, timeIndex) => (
             <TableRow key={time}>
@@ -92,7 +93,7 @@ const TimetableGrid: React.FC<TimetableGridProps> = ({ currentWeek, onSubjectCli
                   key={`${time}-${dayInfo.dateString}`}
                   align="center"
                   sx={{
-                    //backgroundColor: dayInfo.dateString === todayString ? '#ffffbc' : 'white',
+                    backgroundColor: dayInfo.dateString === todayString ? '#ffffbc' : 'white',
                     height: 60
                   }}
                 >

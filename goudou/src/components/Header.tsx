@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppBar, Toolbar, Button, Box } from '@mui/material';
+import { AppBar, Toolbar, Button, Box,Typography } from '@mui/material';
 import { KeyboardArrowDown } from '@mui/icons-material';
 
 interface HeaderProps {
@@ -29,6 +29,11 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setCurrentPage }) => {
               {item}
             </Button>
           ))}
+        </Box>
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 1 }}>
+          <Typography variant="body2" sx={{ color: 'black' }}>
+            ログイン中：3年1組 山田 太郎
+          </Typography>
         </Box>
       </Toolbar>
     </AppBar>
