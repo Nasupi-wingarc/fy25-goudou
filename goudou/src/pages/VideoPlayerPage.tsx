@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Typography, Button, Paper, Chip } from '@mui/material';
-import { ArrowBack, PlayArrow } from '@mui/icons-material';
+import { ArrowBack } from '@mui/icons-material';
 
 interface VideoPlayerPageProps {
   subject: string;
@@ -31,27 +31,15 @@ const VideoPlayerPage: React.FC<VideoPlayerPageProps> = ({ subject, onBack }) =>
           border: '2px solid #ddd'
         }}
       >
-        <Box sx={{ textAlign: 'center' }}>
-          <Box
-            sx={{
-              width: 80,
-              height: 80,
-              borderRadius: '50%',
-              backgroundColor: '#1976d2',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              mx: 'auto',
-              mb: 2,
-              cursor: 'pointer',
-              '&:hover': {
-                backgroundColor: '#1565c0'
-              }
-            }}
-          >
-            <PlayArrow sx={{ fontSize: 40, color: 'white', ml: 1 }} />
-          </Box>
-        </Box>
+        <video
+          width="100%"
+          height="100%"
+          controls
+          style={{ objectFit: 'cover' }}
+        >
+          <source src="/src/assets/本能寺の変.mp4" type="video/mp4" />
+          お使いのブラウザは動画タグに対応していません。
+        </video>
       </Paper>
       
       <Box sx={{ mt: 2, display: 'flex', gap: 1, alignItems: 'center' }}>

@@ -83,7 +83,7 @@ const TimetableGrid: React.FC<TimetableGridProps> = ({ currentWeek, onSubjectCli
         <TableBody>
           {timeSlots.map((time, timeIndex) => (
             <TableRow key={time}>
-              <TableCell sx={{ backgroundColor: '#f5f5f5', fontWeight: 'bold' }}>
+              <TableCell sx={{ backgroundColor: '#f5f5f5', fontWeight: 'bold', textAlign: 'center' }}>
                 {time}
               </TableCell>
               {weekDates.map((dayInfo, dayIndex) => (
