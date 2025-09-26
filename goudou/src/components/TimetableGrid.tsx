@@ -92,7 +92,7 @@ const TimetableGrid: React.FC<TimetableGridProps> = ({ currentWeek, onSubjectCli
                   key={`${time}-${dayInfo.dateString}`}
                   align="center"
                   sx={{
-                    backgroundColor: dayInfo.dateString === todayString ? '#ffffbc' : 'white',
+                    //backgroundColor: dayInfo.dateString === todayString ? '#ffffbc' : 'white',
                     height: 60
                   }}
                 >
